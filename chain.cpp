@@ -19,7 +19,16 @@ Chain::~Chain(){ /*your code here*/
  * @param ndata The data to be inserted.
  */
 void Chain::insertFront(const Block & ndata){
-/* your code here! */
+    Node *insertNode = Node(ndata);
+    Node *temp = head_->next; 
+
+    head_->next = insertNode;
+    insertNode->prev = head_;
+
+    insertNode->next = temp;
+    temp->prev = insertNode;
+
+    length_ += 1;
 }
 
 /**
@@ -30,7 +39,16 @@ void Chain::insertFront(const Block & ndata){
  * @param ndata The data to be inserted.
  */
 void Chain::insertBack(const Block & ndata){
-   /* your code here! */
+   Node *insertNode = Node(ndata);
+   Node *temp = tail_->prev;
+
+   temp->next = insertNode;
+   insertNode->prev = temp;
+
+   insertNode->next = tail_;
+   tail->prev = insertNode;
+
+   length_+=1;
 }
 
 /**
@@ -42,7 +60,41 @@ void Chain::insertBack(const Block & ndata){
  * not changed in the move.
  */
 void Chain::moveToBack(int startPos, int len){
-   /* your code here! */
+    Node *curr = head->next;
+    // int endPos = startPos + len - 1;
+    for(int index = 0; index < startPos; index++){
+        curr = curr->next;
+    }
+    if(len <= 0){
+        return;
+    }
+    else if(len == 1){
+        curr->prev->next = curr->next;
+        curr->next->prev = curr->prev;
+        
+        Node *temp = tail_->prev;
+        temp->next = curr;
+        curr->prev = temp;
+
+        curr->next = tail_;
+        tail_->prev = curr;
+    }
+    else{
+        Node *moveEnd = curr;
+        for(int i = 0; i < len - 1; i++){
+            moveEnd = moveEnd->next;
+        }
+        curr->prev->next = moveEnd->next;
+        moveEnd->next->prev = curr->prev;
+
+        Node tailPrev = tail_->prev;
+
+        tailPrev->next = curr;
+        curr->prev = tailPrev;
+
+        tail_->prev = moveEnd;
+        moveEnd->next = tail_;
+    }
 }
 
 /**
@@ -51,7 +103,7 @@ void Chain::moveToBack(int startPos, int len){
  * the end of the chain (maintaining the sentinel at the end).
  */
 void Chain::rotate(int k){
-   /* your code here! */
+    moveToBack(0, k);
 }
 
 /**
@@ -59,7 +111,34 @@ void Chain::rotate(int k){
  * with the Node at pos2. the positions are 1-based.
  */
 void Chain::swap(int pos1, int pos2){
-   /*your code here */
+    Node *position1 = head_->next;
+    Node *position2 = head_->next;
+
+    for(int index1 = 0; index1 < pos1; index1++){
+        position1 = position1->next;
+    }
+    for(int index2 = 0; index2 < pos2; index2++){
+        position2 = position2->next;
+    }
+
+    Node *pos1Temp = position1;
+    Node *pos2Temp = position2;
+
+    position1->prev->next = pos2Temp;
+    pos2Temp->prev = position1->prev;
+
+    position1->next->prev = pos2Temp;
+    pos2Temp->next = position1->next;
+
+
+    position2->prev->next = pos1Temp;
+    pos1Temp->prev = position2->prev;
+
+    position2->next->prev = pos1Temp;
+    pos1Temp->next = position2->next;
+
+    position1 = pos1Temp;
+    position2 = pos2Temp;
 }
 
 /*
