@@ -60,41 +60,41 @@ void Chain::insertBack(const Block & ndata){
  * not changed in the move.
  */
 void Chain::moveToBack(int startPos, int len){
-    Node *curr = head_->next;
-    // int endPos = startPos + len - 1;
-    for(int index = 0; index < startPos; index++){
-        curr = curr->next;
-    }
-    if(len <= 0){
-        return;
-    }
-    else if(len == 1){
-        curr->prev->next = curr->next;
-        curr->next->prev = curr->prev;
+    // Node *curr = head_->next;
+    // // int endPos = startPos + len - 1;
+    // for(int index = 0; index < startPos ; index++){
+    //     curr = curr->next;
+    // }
+    // if(len <= 0){
+    //     return;
+    // }
+    // else if(len == 1){
+    //     curr->prev->next = curr->next;
+    //     curr->next->prev = curr->prev;
         
-        Node *temp = tail_->prev;
-        temp->next = curr;
-        curr->prev = temp;
+    //     Node *temp = tail_->prev;
+    //     temp->next = curr;
+    //     curr->prev = temp;
 
-        curr->next = tail_;
-        tail_->prev = curr;
-    }
-    else{
-        Node *moveEnd = curr;
-        for(int i = 0; i < len - 1; i++){
-            moveEnd = moveEnd->next;
-        }
-        curr->prev->next = moveEnd->next;
-        moveEnd->next->prev = curr->prev;
+    //     curr->next = tail_;
+    //     tail_->prev = curr;
+    // }
+    // else{
+    //     Node *moveEnd = curr;
+    //     for(int i = 0; i < len - 1; i++){
+    //         moveEnd = moveEnd->next; 
+    //     }
+    //     curr->prev->next = moveEnd->next;
+    //     moveEnd->next->prev = curr->prev;
 
-        Node *tailPrev = tail_->prev;
+    //     Node *tailPrev = tail_->prev;
 
-        tailPrev->next = curr;
-        curr->prev = tailPrev;
+    //     tailPrev->next = curr;
+    //     curr->prev = tailPrev;
 
-        tail_->prev = moveEnd;
-        moveEnd->next = tail_;
-    }
+    //     tail_->prev = moveEnd;
+    //     moveEnd->next = tail_;
+    // }
 }
 
 /**
@@ -120,6 +120,9 @@ void Chain::swap(int pos1, int pos2){
     for(int index2 = 0; index2 < pos2; index2++){
         position2 = position2->next;
     }
+
+    position1 = position1->prev;
+    position2 = position2->prev;
 
     Node *pos1Prev = position1->prev;
     Node *pos2Prev = position2->prev;
