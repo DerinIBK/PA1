@@ -18,14 +18,14 @@ int Block::height() const{
 void Block::render(PNG & im, int upLeftX, int upLeftY) const {
 
    // Iterate through im, starting from a certain corner
-   for (unsigned x = 0; x < width(); x++){
-       for(unsigned y = 0; y < height(); y++){
+   for (int x = 0; x < width(); x++){
+       for(int y = 0; y < height(); y++){
 
             // The individual pixel of the image that we will be modifying
             HSLAPixel *pixel = im.getPixel(x+upLeftX, y+upLeftY);
 
             // Block pixel
-            HSLAPixel blockPixel = data[x][y];
+            HSLAPixel blockPixel = data.at(x).at(y);
 
             // now pointing to the blocks values for saturation, luminance, hue and alpha
             pixel->s = blockPixel.s;
@@ -45,12 +45,12 @@ void Block::render(PNG & im, int upLeftX, int upLeftY) const {
 void Block::build(PNG & im, int upLeftX, int upLeftY, int cols, int rows) {  
 
     // Iterate through the section of the image you are examining right now
-    for (unsigned x = upLeftX; x < cols + upLeftX; x++) {
+    for (int x = upLeftX; x < cols + upLeftX; x++) {
 
         // Declare a vector of HSLAPixel's
         vector<HSLAPixel> vector;
         
-        for (unsigned y = upLeftY; y < rows + upLeftY; y++) {
+        for (int y = upLeftY; y < rows + upLeftY; y++) {
             // Get the pixel at point (x,y)
             HSLAPixel *pixel = im.getPixel(x, y);
             // Put that pixel's value in the vector (dereference)

@@ -60,41 +60,44 @@ void Chain::insertBack(const Block & ndata){
  * not changed in the move.
  */
 void Chain::moveToBack(int startPos, int len){
-    // Node *curr = head_->next;
-    // // int endPos = startPos + len - 1;
-    // for(int index = 0; index < startPos ; index++){
-    //     curr = curr->next;
-    // }
-    // if(len <= 0){
-    //     return;
-    // }
-    // else if(len == 1){
-    //     curr->prev->next = curr->next;
-    //     curr->next->prev = curr->prev;
+    Node *curr = head_->next;
+
+    for(int index = 1; index < startPos ; index++){
+        curr = curr->next;
+    }
+    if(len <= 0){
+        return;
+    }
+    else if(len == 1){
+        curr->prev->next = curr->next;
+        curr->next->prev = curr->prev;
         
-    //     Node *temp = tail_->prev;
-    //     temp->next = curr;
-    //     curr->prev = temp;
+        Node *temp = tail_->prev;
+        temp->next = curr;
+        curr->prev = temp;
 
-    //     curr->next = tail_;
-    //     tail_->prev = curr;
-    // }
-    // else{
-    //     Node *moveEnd = curr;
-    //     for(int i = 0; i < len - 1; i++){
-    //         moveEnd = moveEnd->next; 
-    //     }
-    //     curr->prev->next = moveEnd->next;
-    //     moveEnd->next->prev = curr->prev;
+        curr->next = tail_;
+        tail_->prev = curr;
+    }
+    else{
+        Node *moveEnd = curr->next;
+        for(int i = 1; i < len - 1; i++){
+            moveEnd = moveEnd->next; 
+        }
 
-    //     Node *tailPrev = tail_->prev;
+        // connect the nodes before and after the sublist youre moving 
+        curr->prev->next = moveEnd->next;
+        moveEnd->next->prev = curr->prev;
 
-    //     tailPrev->next = curr;
-    //     curr->prev = tailPrev;
+        // re-assigning the sublist
+        Node *tailPrev = tail_->prev;
 
-    //     tail_->prev = moveEnd;
-    //     moveEnd->next = tail_;
-    // }
+        tailPrev->next = curr;
+        curr->prev = tailPrev;
+
+        tail_->prev = moveEnd;
+        moveEnd->next = tail_;
+    }
 }
 
 /**
@@ -170,7 +173,7 @@ void Chain::twist(Chain & other){
  */
 
 void Chain::clear() {
-   /*your code here*/
+    /* Your code here. */
 }
 
 /* makes the current object into a copy of the parameter:
