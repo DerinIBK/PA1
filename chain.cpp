@@ -19,7 +19,7 @@ Chain::~Chain(){ /*your code here*/
  * @param ndata The data to be inserted.
  */
 void Chain::insertFront(const Block & ndata){
-    Node *insertNode = Node(ndata);
+    Node *insertNode = new Node(ndata);
     Node *temp = head_->next; 
 
     head_->next = insertNode;
@@ -39,14 +39,14 @@ void Chain::insertFront(const Block & ndata){
  * @param ndata The data to be inserted.
  */
 void Chain::insertBack(const Block & ndata){
-   Node *insertNode = Node(ndata);
+   Node *insertNode = new Node(ndata);
    Node *temp = tail_->prev;
 
    temp->next = insertNode;
    insertNode->prev = temp;
 
    insertNode->next = tail_;
-   tail->prev = insertNode;
+   tail_->prev = insertNode;
 
    length_+=1;
 }
@@ -60,7 +60,7 @@ void Chain::insertBack(const Block & ndata){
  * not changed in the move.
  */
 void Chain::moveToBack(int startPos, int len){
-    Node *curr = head->next;
+    Node *curr = head_->next;
     // int endPos = startPos + len - 1;
     for(int index = 0; index < startPos; index++){
         curr = curr->next;
@@ -87,7 +87,7 @@ void Chain::moveToBack(int startPos, int len){
         curr->prev->next = moveEnd->next;
         moveEnd->next->prev = curr->prev;
 
-        Node tailPrev = tail_->prev;
+        Node *tailPrev = tail_->prev;
 
         tailPrev->next = curr;
         curr->prev = tailPrev;
