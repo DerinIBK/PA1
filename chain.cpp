@@ -121,24 +121,32 @@ void Chain::swap(int pos1, int pos2){
         position2 = position2->next;
     }
 
-    Node *pos1Temp = position1;
-    Node *pos2Temp = position2;
+    Node *pos1Prev = position1->prev;
+    Node *pos2Prev = position2->prev;
 
-    position1->prev->next = pos2Temp;
-    pos2Temp->prev = position1->prev;
+    Node *pos1Next = position1->next;
+    Node *pos2Next = position2->next;
 
-    position1->next->prev = pos2Temp;
-    pos2Temp->next = position1->next;
+    // removing the nodes from the chain
+    position1->prev->next = position1->next;
+    position1->next->prev = position1->prev;
 
+    position2->prev->next = position2->next;
+    position2->next->prev = position2->prev;
 
-    position2->prev->next = pos1Temp;
-    pos1Temp->prev = position2->prev;
+    // re-inserting node 2 
+    pos1Prev->next = position2;
+    position2->prev = pos1Prev;
 
-    position2->next->prev = pos1Temp;
-    pos1Temp->next = position2->next;
+    position2->next = pos1Next;
+    pos1Next->prev = position2;
 
-    position1 = pos1Temp;
-    position2 = pos2Temp;
+    // re-inserting node 1 
+    pos2Prev->next = position1;
+    position1->prev = pos2Prev;
+
+    position1->next = pos2Next;
+    pos2Next->prev = position1;
 }
 
 /*
