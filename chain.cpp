@@ -172,9 +172,19 @@ void Chain::twist(Chain & other){
  * current Chain class.
  */
 
-void Chain::clear() {
-    /* Your code here. */
-}
+ void Chain::clear() {
+    
+        Node *currNode;
+        // Traverse through each node in the list
+        for(int i = 1; i < length_; i++){
+    
+            // Pointer to the current node
+            currNode = walk(head_, i);
+    
+            // Delete this node
+            delete currNode;
+        }
+    }
 
 /* makes the current object into a copy of the parameter:
  * All member variables should have the same value as
