@@ -8,7 +8,12 @@
  * memory does not leak on destruction of a chain.
  */
 Chain::~Chain(){ /*your code here*/
+    clear();
+    head_->next = NULL;
+    tail_->prev = NULL;
 
+    delete head_;
+    delete tail_;
 }
 
 /**
@@ -164,7 +169,32 @@ void Chain::swap(int pos1, int pos2){
  */
 
 void Chain::twist(Chain & other){
-   /* Your code here. */
+   for(int index = 1; index <= length_; index++){
+         if(index %2 == 0){
+            Node *chain1Curr = walk(head_, index);
+            Node *chain2Curr = walk(other.head_, index);
+
+            Node *chain1Prev = chain1Curr->prev;
+            Node *chain1Next = chain1Curr->next;
+
+            Node *chain2Prev = chain2Curr->prev;
+            Node *chain2Next = chain2Curr->next;
+
+            // setting chain 1
+            chain2Curr->prev = chain1Prev;
+            chain1Prev->next = chain2Curr;
+
+            chain2Curr->next = chain1Next;
+            chain1Next->prev = chain2Curr;
+            
+            //setting chain 2
+            chain1Curr->prev = chain2Prev;
+            chain2Prev->next = chain1Curr;
+
+            chain1Curr->next = chain2Next;
+            chain2Next->prev = chain1Curr;
+       }
+   }
 }
 
 /**
@@ -173,16 +203,17 @@ void Chain::twist(Chain & other){
  */
 
  void Chain::clear() {
-    
         Node *currNode;
         // Traverse through each node in the list
         for(int i = 1; i < length_; i++){
-    
             // Pointer to the current node
-            currNode = walk(head_, i);
-    
-            // Delete this node
-            delete currNode;
+            if(head_->next != tail_){
+                currNode = head_->next;
+                // Delete this node
+                currNode->prev->next = currNode->next;
+                currNode->next->prev = currNode->prev;
+                delete currNode;
+            }
         }
     }
 
@@ -194,5 +225,19 @@ void Chain::twist(Chain & other){
  */
 
 void Chain::copy(Chain const& other) {
-   /* your code here! */
+    width_ = other.width_;
+    height_ = other.height_;
+    head_ = new Node();
+    tail_ = new Node();
+    length_ = 0;
+    head_->next = tail_;
+    tail_->prev = head_;
+
+    for(int index = 1; index <= other.length_; index++){
+        Node *chain1Curr = walk(other.head_, index);
+        if(chain1Curr == other.tail_){
+            break;
+        }
+        insertBack(chain1Curr->data);
+    }
 }
